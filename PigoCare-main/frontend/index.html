@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pigo Care — Farm Management Dashboard</title>
+  <meta name="description"
+    content="Pigo Care — A professional pig farm management system. Register, track, search, and update pig records with ease." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-logo">
+      <img src="logo.png" alt="Pigo Care" class="logo-img" />
+      <div class="logo-text">
+        <span class="logo-name">Pigo Care</span>
+        <span class="logo-sub">Dashboard</span>
+      </div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <a href="#" class="nav-item active" data-view="registry" id="nav-registry">
+        <span class="nav-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="3" width="18" height="18" rx="2" />
+            <path d="M3 9h18M9 21V9" />
+          </svg>
+        </span>
+        <span>DataBase</span>
+      </a>
+      <a href="#" class="nav-item" data-view="register" id="nav-register">
+        <span class="nav-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10" />
+            <path d="M12 8v8M8 12h8" />
+          </svg>
+        </span>
+        <span>Register Pig</span>
+      </a>
+      <a href="#" class="nav-item" data-view="search" id="nav-search">
+        <span class="nav-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8" />
+            <path d="m21 21-4.35-4.35" />
+          </svg>
+        </span>
+        <span>Search</span>
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="server-status" id="server-status">
+        <span class="status-dot" id="status-dot"></span>
+        <span id="status-text">Connecting…</span>
+      </div>
+    </div>
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <main class="main" id="main">
+
+    <!-- TOP BAR -->
+    <header class="topbar">
+      <button class="sidebar-toggle" id="sidebar-toggle" aria-label="Toggle sidebar">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="3" y1="6" x2="21" y2="6" />
+          <line x1="3" y1="12" x2="21" y2="12" />
+          <line x1="3" y1="18" x2="21" y2="18" />
+        </svg>
+      </button>
+      <div class="topbar-title" id="topbar-title">Pig DataBase</div>
+      <div class="topbar-actions">
+        <button class="btn btn-primary" id="topbar-add-btn">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <path d="M12 5v14M5 12h14" />
+          </svg>
+          Register Pig
+        </button>
+      </div>
+    </header>
+
+    <!-- ===== VIEW: REGISTRY ===== -->
+    <section class="view active" id="view-registry">
+      <div class="view-header">
+        <div>
+          <p class="view-subtitle">All registered pigs across the farms</p>
+        </div>
+        <div class="stats-row" id="stats-row">
+          <div class="stat-chip">
+            <span class="stat-num" id="stat-total">—</span>
+            <span class="stat-label">Total</span>
+          </div>
+          <div class="stat-chip vaccinated">
+            <span class="stat-num" id="stat-vaccinated">—</span>
+            <span class="stat-label">Vaccinated</span>
+          </div>
+          <div class="stat-chip unvaccinated">
+            <span class="stat-num" id="stat-unvaccinated">—</span>
+            <span class="stat-label">Unvaccinated</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="toolbar">
+        <!-- Left: search removed -->
+        <div class="toolbar-left">
+        </div>
+
+        <!-- Right: view toggle + reload + filter -->
+        <div class="toolbar-right">
+          <div class="view-toggle">
+            <button class="view-mode-btn active" id="grid-btn" title="Grid view">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="3" y="3" width="7" height="7" />
+                <rect x="14" y="3" width="7" height="7" />
+                <rect x="3" y="14" width="7" height="7" />
+                <rect x="14" y="14" width="7" height="7" />
+              </svg>
+            </button>
+            <button class="view-mode-btn" id="list-btn" title="List view">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="8" y1="6" x2="21" y2="6" />
+                <line x1="8" y1="12" x2="21" y2="12" />
+                <line x1="8" y1="18" x2="21" y2="18" />
+                <line x1="3" y1="6" x2="3.01" y2="6" />
+                <line x1="3" y1="12" x2="3.01" y2="12" />
+                <line x1="3" y1="18" x2="3.01" y2="18" />
+              </svg>
+            </button>
+          </div>
+          <button class="reload-btn" id="registry-reload-btn" title="Refresh database">
+            <svg id="reload-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="2.2">
+              <path d="M23 4v6h-6" />
+              <path d="M1 20v-6h6" />
+              <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15" />
+            </svg>
+          </button>
+          <div class="sort-btn-wrap" id="sort-btn-wrap">
+            <div class="view-toggle" id="filter-sort-group">
+              <button class="view-mode-btn" id="registry-sort-btn" title="Sort database">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M3 6h18"/>
+                  <path d="M7 12h10"/>
+                  <path d="M10 18h4"/>
+                </svg>
+                <span class="filter-badge hidden" id="sort-active-indicator"></span>
+              </button>
+              <button class="view-mode-btn" id="registry-filter-btn" title="Filter database">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3" />
+                </svg>
+                <span class="filter-badge hidden" id="filter-active-indicator"></span>
+              </button>
+            </div>
+            <div class="sort-dropdown hidden" id="sort-dropdown">
+              <button class="sort-dropdown-item active" data-val="registration_desc">
+                <svg class="sort-dropdown-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><polyline points="12 7 12 12 15 15"/></svg>
+                Registration (Latest)
+              </button>
+              <button class="sort-dropdown-item" data-val="registration_asc">
+                <svg class="sort-dropdown-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a9 9 0 1 1-9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><polyline points="12 7 12 12 15 15"/></svg>
+                Registration (Oldest)
+              </button>
+              <button class="sort-dropdown-item" data-val="age_asc">
+                <svg class="sort-dropdown-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>
+                Age (Youngest)
+              </button>
+              <button class="sort-dropdown-item" data-val="age_desc">
+                <svg class="sort-dropdown-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><path d="M12 3a4 4 0 1 0 0 8 4 4 0 0 0 0-8z"/><path d="M9 11v1"/><path d="M15 11v1"/></svg>
+                Age (Eldest)
+              </button>
+              <button class="sort-dropdown-item" data-val="name_asc">
+                <svg class="sort-dropdown-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><text x="2" y="16" font-size="12" font-weight="700" fill="currentColor" stroke="none">AZ</text><line x1="19" y1="5" x2="19" y2="19"/><polyline points="15 9 19 5 23 9"/></svg>
+                Alphabetically (A-Z)
+              </button>
+              <button class="sort-dropdown-item" data-val="name_desc">
+                <svg class="sort-dropdown-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><text x="2" y="16" font-size="12" font-weight="700" fill="currentColor" stroke="none">AZ</text><line x1="19" y1="5" x2="19" y2="19"/><polyline points="23 15 19 19 15 15"/></svg>
+                Alphabetically (Z-A)
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="pig-grid" id="pig-grid">
+        <!-- cards injected by JS -->
+        <div class="loading-state" id="registry-loading">
+          <div class="spinner"></div>
+          <p>Loading pigs…</p>
+        </div>
+      </div>
+
+      <div class="empty-state hidden" id="registry-empty">
+        <div class="empty-icon">🐷</div>
+        <h3>No pigs registered yet</h3>
+        <p>Start by registering your first pig using the button above.</p>
+      </div>
+    </section>
+
+    <!-- ===== VIEW: REGISTER ===== -->
+    <section class="view" id="view-register">
+      <div class="view-header"></div>
+
+      <div class="form-container">
+        <form id="register-form" enctype="multipart/form-data" novalidate>
+
+          <!-- Image Upload -->
+          <div class="form-section">
+            <h3 class="form-section-title">Pig Photos <span
+                style="font-weight:400;font-size:12px;color:var(--text-muted)">(up to 5 images)</span></h3>
+            <div class="image-upload-zone" id="upload-zone">
+              <input type="file" id="reg-image" name="image" accept="image/*" multiple required class="file-input" />
+              <div class="upload-placeholder" id="upload-placeholder">
+                <div class="upload-icon">
+                  <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                    <polyline points="17,8 12,3 7,8" />
+                    <line x1="12" y1="3" x2="12" y2="15" />
+                  </svg>
+                </div>
+                <p class="upload-text">Drop images here or <span>browse</span></p>
+                <p class="upload-hint">JPG, PNG, WEBP · Max 5 images · 10MB each</p>
+              </div>
+              <div class="multi-preview-grid hidden" id="multi-preview-grid"></div>
+            </div>
+            <div class="upload-counter hidden" id="upload-counter"></div>
+          </div>
+
+          <!-- Basic Info -->
+          <div class="form-section">
+            <h3 class="form-section-title">Basic Information</h3>
+            <div class="form-grid">
+              <div class="form-field">
+                <label for="reg-pig-name">Pig Name <span class="required">*</span></label>
+                <input type="text" id="reg-pig-name" name="pig_name" placeholder="e.g. Babe" required />
+              </div>
+              <div class="form-field">
+                <label>Pig ID</label>
+                <div class="auto-id-display" id="auto-id-display">Auto-assigned on save</div>
+              </div>
+              <div class="form-field">
+                <label for="reg-dob">Date of Birth <span class="required">*</span></label>
+                <input type="date" id="reg-dob" name="dob" required />
+              </div>
+              <div class="form-field breed-field-wrap">
+                <label>Breed <span class="required">*</span></label>
+                <div class="breed-dropdown" id="breed-dropdown">
+                  <button type="button" class="breed-trigger" id="breed-trigger">
+                    <span id="breed-trigger-text">Select a breed…</span>
+                    <svg class="breed-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                      stroke="currentColor" stroke-width="2.2">
+                      <polyline points="6,9 12,15 18,9" />
+                    </svg>
+                  </button>
+                  <div class="breed-panel hidden" id="breed-panel">
+                    <div class="breed-search-wrap">
+                      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2.5">
+                        <circle cx="11" cy="11" r="8" />
+                        <path d="m21 21-4.35-4.35" />
+                      </svg>
+                      <input type="text" id="breed-search" placeholder="Search breeds…" autocomplete="off" />
+                    </div>
+                    <ul class="breed-list" id="breed-list"></ul>
+                  </div>
+                </div>
+                <!-- Hidden input carries the actual value to FormData -->
+                <input type="hidden" id="reg-breed" name="breed" />
+                <!-- Shown only when 'Other' is selected -->
+                <div id="breed-other-wrap" class="hidden" style="flex-direction:column;gap:6px;margin-top:8px;">
+                  <label class="farm-address-label">Custom Breed Name <span class="required">*</span></label>
+                  <input type="text" id="breed-other-input" class="breed-other-input"
+                    placeholder="Custom breed name…" autocomplete="off" />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Farm Info -->
+          <div class="form-section">
+            <h3 class="form-section-title">Farm Details</h3>
+            <div class="form-grid">
+              <div class="form-field breed-field-wrap" style="grid-column: 1 / -1">
+                <label>Farm Name <span class="required">*</span></label>
+                <div class="breed-dropdown" id="farm-dropdown">
+                  <button type="button" class="breed-trigger" id="farm-trigger">
+                    <span id="farm-trigger-text">Select a farm…</span>
+                    <svg class="breed-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                      stroke="currentColor" stroke-width="2.2">
+                      <polyline points="6,9 12,15 18,9" />
+                    </svg>
+                  </button>
+                  <div class="breed-panel hidden" id="farm-panel">
+                    <div class="breed-search-wrap">
+                      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2.5">
+                        <circle cx="11" cy="11" r="8" />
+                        <path d="m21 21-4.35-4.35" />
+                      </svg>
+                      <input type="text" id="farm-search" placeholder="Search farms…" autocomplete="off" />
+                    </div>
+                    <ul class="breed-list" id="farm-list"></ul>
+                  </div>
+                </div>
+                <!-- Auto-filled address chip (shown after selection) -->
+                <div class="farm-address-section hidden" id="farm-address-section">
+                  <label class="farm-address-label">Farm Address</label>
+                  <div class="farm-address-display" id="farm-address-display"></div>
+                </div>
+                <!-- Other: custom name + address inputs -->
+                <div class="farm-other-wrap hidden" id="farm-other-wrap">
+                  <label class="farm-address-label">Custom Farm Name <span class="required">*</span></label>
+                  <input type="text" id="farm-other-name" class="breed-other-input" placeholder="Custom farm name…"
+                    autocomplete="off" />
+                  <label class="farm-address-label" style="margin-top:12px">Custom Farm Address <span
+                      class="required">*</span></label>
+                  <input type="text" id="farm-other-address" class="breed-other-input" placeholder="Custom farm address…"
+                    autocomplete="off" />
+                </div>
+                <!-- Hidden inputs carry values to FormData -->
+                <input type="hidden" id="reg-farm-name" name="farm_name" />
+                <input type="hidden" id="reg-farm-address" name="farm_address" />
+              </div>
+            </div>
+          </div>
+
+          <!-- Vaccination -->
+          <div class="form-section">
+            <h3 class="form-section-title">Vaccination Status</h3>
+            <div class="toggle-row">
+              <label class="toggle-label">Vaccinated</label>
+              <label class="toggle-switch">
+                <input type="checkbox" id="reg-vaccinated" name="vaccinated" />
+                <span class="toggle-thumb"></span>
+              </label>
+            </div>
+            <div class="form-grid" id="vaccine-date-wrap" style="display:none">
+              <div class="form-field">
+                <label for="reg-vaccine-date">Vaccine Date</label>
+                <input type="date" id="reg-vaccine-date" name="vaccine_date" />
+              </div>
+            </div>
+          </div>
+
+          <!-- Actions -->
+          <div class="form-actions">
+            <button type="button" class="btn btn-ghost" id="reg-reset">Clear Form</button>
+            <button type="submit" class="btn btn-primary" id="reg-submit">
+              <span id="reg-submit-text">Register Pig</span>
+              <span class="btn-spinner hidden" id="reg-spinner"></span>
+            </button>
+          </div>
+
+          <div class="form-feedback hidden" id="reg-feedback"></div>
+        </form>
+      </div>
+    </section>
+
+    <!-- ===== VIEW: SEARCH ===== -->
+    <section class="view" id="view-search">
+      <div class="view-header">
+        <div>
+          <p class="view-subtitle">Find by name, ID, breed, or farm</p>
+        </div>
+      </div>
+
+      <div class="search-bar-wrap">
+        <div class="search-bar">
+          <svg class="search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="2">
+            <circle cx="11" cy="11" r="8" />
+            <path d="m21 21-4.35-4.35" />
+          </svg>
+          <input type="text" id="search-input" placeholder="Search pigs…" autocomplete="off" />
+          <button class="search-clear hidden" id="search-clear">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="18" y1="6" x2="6" y2="18" />
+              <line x1="6" y1="6" x2="18" y2="18" />
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <div class="search-hint" id="search-hint">
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <circle cx="11" cy="11" r="8" />
+          <path d="m21 21-4.35-4.35" />
+        </svg>
+        <p>Type at least 2 characters to search</p>
+      </div>
+
+      <div class="pig-grid hidden" id="search-results"></div>
+
+      <div class="empty-state hidden" id="search-empty">
+        <div class="empty-icon">🔍</div>
+        <h3>No results found</h3>
+        <p>Try a different name, ID, or breed.</p>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ===== PIG DETAIL MODAL ===== -->
+  <div class="modal-overlay hidden" id="modal-overlay"></div>
+  <div class="modal hidden" id="pig-modal">
+    <button class="modal-close" id="modal-close" aria-label="Close">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="18" y1="6" x2="6" y2="18" />
+        <line x1="6" y1="6" x2="18" y2="18" />
+      </svg>
+    </button>
+    <div class="modal-body" id="modal-body">
+      <!-- injected by JS -->
+    </div>
+  </div>
+
+  <!-- ===== FILTER MODAL ===== -->
+  <div class="modal-overlay hidden" id="filter-overlay"></div>
+  <div class="modal hidden" id="filter-modal">
+    <button class="modal-close" id="filter-close" aria-label="Close">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="18" y1="6" x2="6" y2="18" />
+        <line x1="6" y1="6" x2="18" y2="18" />
+      </svg>
+    </button>
+    <div class="modal-body filter-modal-body">
+      <div class="modal-header filter-modal-header">
+        <h2 class="modal-title">Filters</h2>
+      </div>
+
+      <div class="modal-scroll-area filter-scroll-area">
+        <!-- Vaccinated Status -->
+        <div class="filter-modal-section">
+          <label class="filter-section-title">VACCINATION STATUS</label>
+          <div class="filter-modal-divider"></div>
+          <div class="filter-segmented-group" id="filter-vaccinated-group">
+            <button class="filter-segment active" data-val="all">All</button>
+            <button class="filter-segment" data-val="true">Vaccinated</button>
+            <button class="filter-segment" data-val="false">Non-Vaccinated</button>
+          </div>
+        </div>
+
+        <!-- Breed -->
+        <div class="filter-modal-section">
+          <label class="filter-section-title">BREED</label>
+          <div class="filter-modal-divider"></div>
+          <div class="input-wrap filter-dropdown-wrap">
+            <div class="breed-dropdown" id="filter-breed-dropdown">
+              <button type="button" class="breed-trigger" id="filter-breed-trigger">
+                <span id="filter-breed-trigger-text">All Breeds</span>
+                <svg class="breed-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                  stroke-width="2.2">
+                  <polyline points="6,9 12,15 18,9" />
+                </svg>
+              </button>
+              <div class="breed-panel hidden" id="filter-breed-panel">
+                <div class="breed-search-wrap">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <circle cx="11" cy="11" r="8" />
+                    <path d="m21 21-4.35-4.35" />
+                  </svg>
+                  <input type="text" id="filter-breed-search" placeholder="Search breeds…" autocomplete="off" />
+                </div>
+                <!-- Extra top item for clear -->
+                <ul class="breed-list" id="filter-breed-list">
+                  <li class="breed-option active" data-val="">All Breeds</li>
+                  <!-- Rest populated by JS -->
+                </ul>
+              </div>
+            </div>
+            <input type="hidden" id="filter-breed-val" value="" />
+          </div>
+        </div>
+
+        <!-- Farm -->
+        <div class="filter-modal-section">
+          <label class="filter-section-title">FARM</label>
+          <div class="filter-modal-divider"></div>
+          <div class="input-wrap filter-dropdown-wrap">
+            <div class="breed-dropdown" id="filter-farm-dropdown">
+              <button type="button" class="breed-trigger" id="filter-farm-trigger">
+                <span id="filter-farm-trigger-text">All Farms</span>
+                <svg class="breed-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                  stroke-width="2.2">
+                  <polyline points="6,9 12,15 18,9" />
+                </svg>
+              </button>
+              <div class="breed-panel hidden" id="filter-farm-panel">
+                <div class="breed-search-wrap">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <circle cx="11" cy="11" r="8" />
+                    <path d="m21 21-4.35-4.35" />
+                  </svg>
+                  <input type="text" id="filter-farm-search" placeholder="Search farms…" autocomplete="off" />
+                </div>
+                <ul class="breed-list" id="filter-farm-list">
+                  <li class="breed-option active" data-val="">All Farms</li>
+                  <!-- Rest populated by JS -->
+                </ul>
+              </div>
+            </div>
+            <input type="hidden" id="filter-farm-val" value="" />
+          </div>
+        </div>
+
+        <!-- DOB -->
+        <div class="filter-modal-section">
+          <label class="filter-section-title">DATE OF BIRTH BETWEEN</label>
+          <div class="filter-modal-divider"></div>
+          <div class="filter-date-row">
+            <div class="input-wrap filter-dropdown-wrap">
+              <input type="date" id="filter-dob-start" class="form-input" />
+            </div>
+            <span class="date-separator">to</span>
+            <div class="input-wrap filter-dropdown-wrap">
+              <input type="date" id="filter-dob-end" class="form-input" />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer filter-modal-footer">
+        <button type="button" class="btn filter-btn-clear" id="filter-clear">Clear All</button>
+        <button type="button" class="btn filter-btn-apply" id="filter-apply">Show Results</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== TOAST ===== -->
+  <div class="toast-container" id="toast-container"></div>
+
+  <script src="app.js"></script>
+</body>
+
+</html>

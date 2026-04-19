@@ -1,0 +1,17 @@
+# Python Virtual Environment
+venv/
+.env
+
+# Uploaded Files (Do not commit user-uploaded images)
+uploads/
+
+# SQLite Database (Do not commit the live database)
+pigs.db
+
+# Python Bytecode
+__pycache__/
+*.py[cod]
+*$py.class
+
+# macOS system files
+.DS_Store
