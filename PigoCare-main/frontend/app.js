@@ -3,7 +3,7 @@
    Talks to Flask backend at BASE_URL
    ============================================================ */
 
-const BASE_URL = 'https://pigo-care-backend.onrender.com';
+const BASE_URL = 'https://pigo-care.onrender.com';
 
 /* ── API KEY ─────────────────────────────────────────────────
    Shared secret sent as the x-api-key header on every request.
